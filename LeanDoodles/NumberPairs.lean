@@ -7,7 +7,7 @@ def digitSum (n : ℕ) : ℕ :=
   if n = 0 then 0 else n % 10 + digitSum (n / 10)
 
 
-lemma s_n_eq_s_10n : ∀ n : ℕ, digitSum n = digitSum (10 * n) := by
+lemma digitSum_n_eq_s_10n : ∀ n : ℕ, digitSum n = digitSum (10 * n) := by
   intro n
   rw [digitSum]
   nth_rw 2 [digitSum]
@@ -65,3 +65,34 @@ lemma n_congruent_digitSum_n_mod_9 (n : ℕ) : n ≡ digitSum n [MOD 9] := by
       _ = d + r := by rw [Nat.one_mul]
       _ = r + d := by rw [Nat.add_comm]
       _ ≡ r + digitSum d [MOD 9] := Nat.ModEq.add_left r IH_d
+
+
+theorem NumberPair_exist_iff_9_dvd_d (d : ℕ) : (∃ a b : ℕ, b - a = d ∧ digitSum a = digitSum b) ↔ (9 ∣ d) := by
+  constructor
+  · intro h
+    rcases h with ⟨a, b, h₁, h₂⟩
+    have a_congruent_b_mod_9 : a ≡ b [MOD 9] := by 
+      calc
+        a ≡ digitSum a [MOD 9] := n_congruent_digitSum_n_mod_9 a
+        _ = digitSum b := h₂
+        _ ≡ b [MOD 9] := (n_congruent_digitSum_n_mod_9 b).symm
+    by_cases a_le_b : a ≤ b
+    · have b_eq_d_add_a := (Nat.sub_eq_iff_eq_add a_le_b).mp h₁
+      have d_ModEq_zero : d ≡ 0 [MOD 9] := by 
+        rw [← Nat.zero_add a, b_eq_d_add_a] at a_congruent_b_mod_9
+        exact (Nat.ModEq.add_right_cancel' a a_congruent_b_mod_9).symm
+      exact Nat.modEq_zero_iff_dvd.mp d_ModEq_zero
+    · have b_sub_a_eq_0 := Nat.sub_eq_zero_of_le (Nat.le_of_lt (Nat.lt_of_not_le a_le_b))
+      rw [b_sub_a_eq_0] at h₁
+      rw [← h₁]
+      exact Nat.dvd_zero 9
+  · intro h
+    use d / 9
+    use 10 * (d / 9)
+    constructor
+      -- b - a = d
+    · rw [mul_comm, ← Nat.mul_sub_one (d / 9), mul_comm]
+      simp
+      exact Nat.mul_div_cancel' h 
+      -- digitSum a = digitSum b
+    · exact digitSum_n_eq_s_10n (d / 9)
