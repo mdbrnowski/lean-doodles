@@ -7,8 +7,14 @@ def digitSum (n : ℕ) : ℕ :=
   if n = 0 then 0 else n % 10 + digitSum (n / 10)
 
 
-lemma digitSum_n_eq_digitSum_10n : ∀ n : ℕ, digitSum n = digitSum (10 * n) := by
-  intro n
+def get_NumberPair (d : ℕ) : Option (ℕ × ℕ) :=
+  if 9 ∣ d then
+    (d / 9, 10 * (d / 9))
+  else
+    none
+
+
+lemma digitSum_n_eq_digitSum_10n (n : ℕ) : digitSum n = digitSum (10 * n) := by
   rw [digitSum]
   nth_rw 2 [digitSum]
   by_cases h : n = 0
@@ -87,9 +93,7 @@ theorem NumberPair_exist_iff_9_dvd_d (d : ℕ) : (∃ a b : ℕ, b - a = d ∧ d
     use d / 9
     use 10 * (d / 9)
     constructor
-      -- b - a = d
     · rw [mul_comm, ← Nat.mul_sub_one (d / 9), mul_comm]
       simp
       exact Nat.mul_div_cancel' h
-      -- digitSum a = digitSum b
     · exact digitSum_n_eq_digitSum_10n (d / 9)
