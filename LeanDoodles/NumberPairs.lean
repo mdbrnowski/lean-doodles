@@ -12,16 +12,8 @@ def digitSum (n : ℕ) : ℕ :=
   if n = 0 then 0 else n % 10 + digitSum (n / 10)
 
 
-def get_NumberPair (d : ℕ) : Option (ℕ × ℕ) :=
-  if 9 ∣ d then
-    (d / 9, 10 * (d / 9))
-  else
-    none
-
-
 lemma digitSum_n_eq_digitSum_10n (n : ℕ) : digitSum n = digitSum (10 * n) := by
-  rw [digitSum]
-  nth_rw 2 [digitSum]
+  unfold digitSum
   by_cases h : n = 0
   · simp [h]
   . nth_rw 2 [digitSum]
@@ -33,12 +25,11 @@ lemma n_ModEq9_digitSum_n (n : ℕ) : n ≡ digitSum n [MOD 9] := by
   | h n ih =>
     cases' lt_or_ge n 10 with h_lt h_ge
     -- Base case: n < 10
-    rw [digitSum]
-    by_cases n_eq_0 : n = 0
+    unfold digitSum
+    split_ifs with n_eq_0
     · simp [n_eq_0]
       rfl
-    · simp [n_eq_0]
-      rw [Nat.mod_eq_of_lt h_lt, Nat.div_eq_of_lt h_lt]
+    · rw [Nat.mod_eq_of_lt h_lt, Nat.div_eq_of_lt h_lt]
       simp [digitSum]
       rfl
     -- Inductive step: n ≥ 10
@@ -58,7 +49,7 @@ lemma n_ModEq9_digitSum_n (n : ℕ) : n ≡ digitSum n [MOD 9] := by
         decide
       exact Nat.lt_add_right r d_lt_10d
     have IH_d : d ≡ digitSum d [MOD 9] := ih d d_lt_n
-    rw [digitSum]
+    unfold digitSum
     have n_ne_0 : n ≠ 0 := by
       intro h
       rw [h] at h_ge
@@ -67,15 +58,14 @@ lemma n_ModEq9_digitSum_n (n : ℕ) : n ≡ digitSum n [MOD 9] := by
     have h10 : 10 ≡ 1 [MOD 9] := by decide
     nth_rw 1 [h_decomp]
     calc
-      10 * d + r ≡ 1 * d + r [MOD 9] := by
-        apply Nat.ModEq.add_right
-        apply Nat.ModEq.mul_right _ h10
+      10 * d + r ≡ 1 * d + r [MOD 9] := by gcongr
       _ = d + r := by rw [Nat.one_mul]
       _ = r + d := by rw [Nat.add_comm]
-      _ ≡ r + digitSum d [MOD 9] := Nat.ModEq.add_left r IH_d
+      _ ≡ r + digitSum d [MOD 9] := by gcongr
 
 
-theorem NumberPair_exist_iff_9_dvd_d (d : ℕ) : (∃ a b : ℕ, b - a = d ∧ digitSum a = digitSum b) ↔ (9 ∣ d) := by
+theorem NumberPair_exist_iff_9_dvd_d (d : ℕ) :
+    (∃ a b : ℕ, b - a = d ∧ digitSum a = digitSum b) ↔ (9 ∣ d) := by
   constructor
   · intro h
     rcases h with ⟨a, b, h₁, h₂⟩
