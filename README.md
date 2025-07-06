@@ -1,4 +1,6 @@
-# lean-doodles
+# Lean Doodles
+
+Casual notes in [Lean](https://lean-lang.org): proofs of various theorems not tied to any specific project.
 
 ## NumberPairs
 
