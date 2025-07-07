@@ -16,52 +16,52 @@ lemma digitSum_n_eq_digitSum_10n (n : ℕ) : digitSum n = digitSum (10 * n) := b
   unfold digitSum
   by_cases h : n = 0
   · simp [h]
-  . nth_rw 2 [digitSum]
+  · nth_rw 2 [digitSum]
     simp [h]
 
 
 lemma n_ModEq9_digitSum_n (n : ℕ) : n ≡ digitSum n [MOD 9] := by
   induction n using Nat.strong_induction_on with
   | h n ih =>
-    cases' lt_or_ge n 10 with h_lt h_ge
+    rcases lt_or_ge n 10 with h_lt | h_ge
     -- Base case: n < 10
-    unfold digitSum
-    split_ifs with n_eq_0
-    · simp [n_eq_0]
-      rfl
-    · rw [Nat.mod_eq_of_lt h_lt, Nat.div_eq_of_lt h_lt]
-      simp [digitSum]
-      rfl
+    · unfold digitSum
+      split_ifs with n_eq_0
+      · simp [n_eq_0]
+        rfl
+      · rw [Nat.mod_eq_of_lt h_lt, Nat.div_eq_of_lt h_lt]
+        simp [digitSum]
+        rfl
     -- Inductive step: n ≥ 10
-    set d := n / 10
-    set r := n % 10
-    have h_decomp : n = 10 * d + r := by
-      rw [Nat.div_add_mod _ 10]
-    have d_lt_n : d < n := by
-      rw [h_decomp]
-      have d_pos : 0 < d := by
-        apply Nat.div_pos h_ge
-        decide
-      have d_lt_10d : d < 10 * d := by
-        nth_rw 1 [← Nat.mul_one d]
-        nth_rw 2 [Nat.mul_comm]
-        apply (Nat.mul_lt_mul_left d_pos).mpr
-        decide
-      exact Nat.lt_add_right r d_lt_10d
-    have IH_d : d ≡ digitSum d [MOD 9] := ih d d_lt_n
-    unfold digitSum
-    have n_ne_0 : n ≠ 0 := by
-      intro h
-      rw [h] at h_ge
-      contradiction
-    simp [n_ne_0]
-    have h10 : 10 ≡ 1 [MOD 9] := by decide
-    nth_rw 1 [h_decomp]
-    calc
-      10 * d + r ≡ 1 * d + r [MOD 9] := by gcongr
-      _ = d + r := by rw [Nat.one_mul]
-      _ = r + d := by rw [Nat.add_comm]
-      _ ≡ r + digitSum d [MOD 9] := by gcongr
+    · set d := n / 10
+      set r := n % 10
+      have h_decomp : n = 10 * d + r := by
+        rw [Nat.div_add_mod _ 10]
+      have d_lt_n : d < n := by
+        rw [h_decomp]
+        have d_pos : 0 < d := by
+          apply Nat.div_pos h_ge
+          decide
+        have d_lt_10d : d < 10 * d := by
+          nth_rw 1 [← Nat.mul_one d]
+          nth_rw 2 [Nat.mul_comm]
+          apply (Nat.mul_lt_mul_left d_pos).mpr
+          decide
+        exact Nat.lt_add_right r d_lt_10d
+      have IH_d : d ≡ digitSum d [MOD 9] := ih d d_lt_n
+      unfold digitSum
+      have n_ne_0 : n ≠ 0 := by
+        intro h
+        rw [h] at h_ge
+        contradiction
+      simp [n_ne_0]
+      have h10 : 10 ≡ 1 [MOD 9] := by decide
+      nth_rw 1 [h_decomp]
+      calc
+        10 * d + r ≡ 1 * d + r [MOD 9] := by gcongr
+        _ = d + r := by rw [Nat.one_mul]
+        _ = r + d := by rw [Nat.add_comm]
+        _ ≡ r + digitSum d [MOD 9] := by gcongr
 
 
 theorem NumberPair_exist_iff_9_dvd_d (d : ℕ) :
