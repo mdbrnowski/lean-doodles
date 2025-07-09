@@ -57,24 +57,13 @@ theorem mays_theorem (f : ℕ → ℕ → Result)
         trivial
       have res_ne_B : ¬f a b = Result.B := by
         by_contra res_eq_B
-        by_cases even_sub : Even (a - b)
-        · set k := (a - b) / 2 with hk
-          have a'_eq_b' : a - k = b + k := by
-            calc
-              a - k = (a - b) + b - k := by omega
-              _ = (2 * k) + b - k := by rw [hk, Nat.mul_comm, Nat.div_two_mul_two_of_even even_sub]
-              _ = b + k := by omega
-          have res'_eq_B := (h_monotone a b k).right res_eq_B
-          have res'_eq_tie := (h_decisive (a - k) (b + k)).mpr a'_eq_b'
-          rw [res'_eq_B] at res'_eq_tie
-          contradiction
-        · set l := (a - b) with hl
-          have res'_eq_A := (h_neutral a b).right.mp res_eq_B
-          have res_eq_A : f a b = Result.A := by
-            have b_add_l_eq_a : b + l = a := by omega
-            have a_sub_l_eq_b : a - l = b := by omega
-            have := (h_monotone b a l).left res'_eq_A
-            rwa [b_add_l_eq_a, a_sub_l_eq_b] at this
-          rw [res_eq_B] at res_eq_A
-          contradiction
+        set r := a - b
+        have res'_eq_A := (h_neutral a b).right.mp res_eq_B
+        have res_eq_A : f a b = Result.A := by
+          have b_add_l_eq_a : b + r = a := by omega
+          have a_sub_l_eq_b : a - r = b := by omega
+          have := (h_monotone b a r).left res'_eq_A
+          rwa [b_add_l_eq_a, a_sub_l_eq_b] at this
+        rw [res_eq_B] at res_eq_A
+        contradiction
       cases res : f a b <;> trivial
