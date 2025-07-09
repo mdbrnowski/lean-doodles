@@ -2,7 +2,15 @@
 
 Casual notes in [Lean](https://lean-lang.org): proofs of various theorems not tied to any specific project.
 
-## NumberPairs
+## May's Theorem
+
+[`MaysTheorem.lean`](/LeanDoodles/MaysTheorem.lean)
+
+May's theorem states that majority rule is the only reasonable (near decisive, anonymous, neutral, and monotone) voting system for two candidates.
+
+You can learn more about it on [my blog](https://dobranow.ski/posts/mays-theorem) or [Wikipedia](https://en.wikipedia.org/wiki/May%27s_theorem).
+
+## Number Pairs
 
 [`NumberPairs.lean`](/LeanDoodles/NumberPairs.lean)
 
