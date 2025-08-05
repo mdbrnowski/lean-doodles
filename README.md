@@ -2,6 +2,12 @@
 
 Casual notes in [Lean](https://lean-lang.org): proofs of various theorems not tied to any specific project.
 
+## Finite Integral Domain
+
+[`FiniteIntegralDomain.lean`](/LeanDoodles/FiniteIntegralDomain.lean)
+
+Every finite integral domain is a field. Special case of the more general Wedderburn's little theorem.
+
 ## May's Theorem
 
 [`MaysTheorem.lean`](/LeanDoodles/MaysTheorem.lean)
