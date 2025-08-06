@@ -6,7 +6,7 @@ Casual notes in [Lean](https://lean-lang.org): proofs of various theorems not ti
 
 [`FiniteIntegralDomain.lean`](/LeanDoodles/FiniteIntegralDomain.lean)
 
-Every finite integral domain is a field. Special case of the more general Wedderburn's little theorem.
+Every finite integral domain is a field.
 
 ## May's Theorem
 

@@ -6,6 +6,7 @@ Authors: Michał Dobranowski
 import Mathlib.Algebra.Ring.Defs
 import Mathlib.Algebra.Field.IsField
 import Mathlib.Data.Finite.Card
+import Mathlib.RingTheory.LittleWedderburn
 
 open Function
 
@@ -25,3 +26,9 @@ theorem finite_integral_domain_is_field (R : Type*) [CommRing R] [IsDomain R] [F
     have h_surj : Surjective f :=
       Finite.injective_iff_surjective.mp h_inj
     exact h_surj 1
+
+/-- Every finite integral domain is a field. The proof is derived from a more general theorem,
+the proof of which relies on more advanced mathematics (like Wedderburn's little theorem). -/
+theorem finite_integral_domain_is_field' (R : Type*) [CommRing R] [IsDomain R] [Finite R] :
+    IsField R :=
+  Finite.isDomain_to_isField R
