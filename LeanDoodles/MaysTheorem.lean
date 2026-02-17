@@ -43,14 +43,14 @@ theorem mays_theorem (f : ℕ → ℕ → Result)
   by_cases a_eq_b : a = b
   · rw [if_pos a_eq_b]
     exact (h_decisive a b).mpr a_eq_b
-  · simp [a_eq_b]
+  · simp only [a_eq_b, ↓reduceIte, gt_iff_lt]
     wlog b_lt_a : b < a generalizing a b
-    · simp [b_lt_a]
+    · simp only [b_lt_a, ↓reduceIte]
       have this := this b a (a_eq_b ∘ Eq.symm)
       have a_lt_b : a < b := by omega
-      simp [a_lt_b] at this
+      simp only [a_lt_b, ↓reduceIte, forall_const] at this
       exact (h_neutral a b).right.mpr this
-    · simp [b_lt_a]
+    · simp only [b_lt_a, ↓reduceIte]
       have res_ne_tie : ¬f a b = Result.tie := by
         have := (h_decisive a b).mp
         contrapose! this

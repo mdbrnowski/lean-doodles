@@ -40,7 +40,7 @@ lemma n_ModEq9_digitSum_n (n : ℕ) : n ≡ digitSum n [MOD 9] := by
       have IH_d : d ≡ digitSum d [MOD 9] := ih d d_lt_n
       unfold digitSum
       have n_ne_0 : n ≠ 0 := by omega
-      simp [n_ne_0]
+      simp only [n_ne_0, ↓reduceIte]
       have h10 : 10 ≡ 1 [MOD 9] := by decide
       nth_rw 1 [h_decomp]
       calc
