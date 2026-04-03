@@ -24,4 +24,4 @@ A *Number Pair* for a given $d \in \mathbb{N}$ is a pair of numbers $(a, b)$ suc
 
 This module contains a constructive proof that a Number Pair exists if and only if $d$ is divisible by $9$.
 
-Inspired by the Wincent DragonByte 2025, [problem N](https://www.wincentdragonbyte.com/archive/qual2025/N/statement) from the qualification round.
+Inspired by the Wincent DragonByte 2025, [problem N](https://www.wincentdragonbyte.com/static/qual2025/N_statement.html) from the qualification round.
